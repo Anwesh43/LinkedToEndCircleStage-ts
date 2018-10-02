@@ -113,7 +113,7 @@ class LTENode {
         context.translate(w/2, this.i * gap + gap)
         for (var j = 0; j < 2; j++) {
             const sf : number = 1 - 2 * j
-            const sc : number = Math.min(0.5, Math.max(this.state.scale - 0.5, 0)) * 2
+            const sc : number = Math.min(0.5, Math.max(this.state.scale - 0.5 * j, 0)) * 2
             const sc1 : number = Math.min(0.5, sc) * 2
             const sc2 : number = Math.min(0.5, Math.max(sc - 0.5, 0)) * 2
             context.save()
@@ -134,6 +134,9 @@ class LTENode {
             context.restore()
         }
         context.restore()
+        if (this.next) {
+            this.next.draw(context)
+        }
     }
 
     update(cb : Function) {
