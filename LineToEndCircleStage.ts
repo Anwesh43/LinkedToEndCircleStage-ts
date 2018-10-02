@@ -4,6 +4,9 @@ const nodes : number = 5
 class LineToEndCircleStage {
     canvas : HTMLCanvasElement  = document.createElement('canvas')
     context : CanvasRenderingContext2D
+    lte : LineToEndCircle = new LineToEndCircle()
+    animator : Animator = new Animator()
+
     initCanvas() {
         this.canvas.width = w
         this.canvas.height = h
@@ -14,11 +17,22 @@ class LineToEndCircleStage {
     render() {
         this.context.fillStyle = '#bdbdbd'
         this.context.fillRect(0, 0, w, h)
+        if (this.lte) {
+            this.lte.draw(this.context)
+        }
     }
 
     handleTap() {
         this.canvas.onmousedown = () => {
-
+            this.lte.startUpdating(() => {
+                this.animator.start(() => {
+                    this.render()
+                    this.lte.update(() => {
+                        this.animator.stop()
+                        this.render()
+                    })
+                })
+            })
         }
     }
 
